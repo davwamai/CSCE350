@@ -2,5 +2,48 @@
 	Also called time complexity
 	How fast an algorithm runs 
 -Space efficiency
-	How much memory is the algorithm consuming
+	The amount of memory required by the alorithm in addition to space              needed for input and output
 	
+--Measuring Input
+	An array that contains n elements, what is the size of the input? 
+	'n' 
+
+	Matrix of size n, what is the size of the input?
+	'total number of elements N'
+	
+	Spell check algorithm, what is the input size
+	'either number of words or number of characters'
+	
+- units for measuring time
+	-basic operation
+		--the most time consuming operation of the algorithm
+		-- typically found in the innermost loop
+		-- contributes the most to overall time efficiency
+	- can be represented by c_op -> execution time of the algorithms basic 			 operation 
+	-c(n), number of time the operation need to be executed for an algorithm
+	
+-Time efficiency
+	-multiplying c_op and c(n) yeilds time efficiency 
+	- T(n) = c_op * c(n)
+	-> if speed of the device increases by 10, then T(n) also increases by  		10
+
+	-if input size is doubled, 
+		let c(n) = .5n(n-1)
+			 = .5n^2 - .5n
+			~= .5n^2
+
+		T(2n) / T(n) = [c_op * .5(2n)^2] / [c_op * .5n^2]
+			     = 4
+
+		T(2n) = 4T(n)
+
+ALGORITHM Sequential Search(A[0,...., n-1], k)
+	// searches for the search key 'k' int he array A by seuqential search
+	// Input : Array A and a search key k 
+	i <- 0 
+	while i < n and A[i]!=k do 
+		i <- i+1
+	if i < n return i 
+	else return -1
+
+		 

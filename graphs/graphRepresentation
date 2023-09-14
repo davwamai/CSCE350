@@ -1,0 +1,35 @@
+-- adjacency matrix
+	matrix denotes whether you can go from rowNum to colNum with a single edge (line) 
+--adjacency linked lists
+	nodes are placed in the list normally, pointers between nodes denote edges.
+--weighted graphs 
+	edges have weights, can be represented with an adjacency matrix
+
+	a	b	c	d
+   a	inf	5	1	inf
+   b	5	inf	7	4
+   c	1	7	inf	2
+   d	inf 	4	2	inf 
+
+
+--how to use an adjacency linked list. denote edges with the node connected and the weights comma delimited
+	a --> b,5 --> c,1 
+
+	b --> a,5 --> c,7 --> d,4
+
+	c --> a,1 --> b,7 --> d,2
+ 
+	d --> b,4 --> c,2
+
+--cyclic graphs 
+	A path of positive length that starts and ends at the same vertex
+	
+--acyclic graphs 
+	do not have any cycles in them 
+	
+--connected graph 
+	graph that has a path between any two vertices. 
+--sets of acyclic conencted graphsthat form one acyclic unconnected graph are called forrests. 
+--a graph that is conencted and acyclcic is called a tree
+--rooted trees, as comapred to free trees, has a 'root' with multiple children below it. Think BinSearch
+

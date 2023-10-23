@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/david/Documents/GitHub/CSCE350/HW4/build",
+  "command": "clang++    -Wall -std=gnu++11 -o CMakeFiles/hw4.dir/main.cpp.o -c /home/david/Documents/GitHub/CSCE350/HW4/main.cpp",
+  "file": "/home/david/Documents/GitHub/CSCE350/HW4/main.cpp",
+  "output": "CMakeFiles/hw4.dir/main.cpp.o"
+}
+]

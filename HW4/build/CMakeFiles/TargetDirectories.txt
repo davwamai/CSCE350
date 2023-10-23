@@ -1,0 +1,3 @@
+/home/david/Documents/GitHub/CSCE350/HW4/build/CMakeFiles/hw4.dir
+/home/david/Documents/GitHub/CSCE350/HW4/build/CMakeFiles/edit_cache.dir
+/home/david/Documents/GitHub/CSCE350/HW4/build/CMakeFiles/rebuild_cache.dir

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 struct Node {
@@ -16,8 +17,10 @@ public:
         root = insertRec(root, val);
     }
 
-    bool search(int val) {
-        return searchRec(root, val) != nullptr;
+    vector<int> search(int val) {
+        vector<int> path;
+        searchRec(root, val, path);
+        return path;
     }
 
     void remove(int val) {
@@ -25,14 +28,14 @@ public:
     }
 
     int findSmallest() {
-        if (root == nullptr) throw runtime_error("BST is empty");
+        if (!root) throw runtime_error("BST is empty");
         Node* current = root;
         while (current->left) current = current->left;
         return current->value;
     }
 
     int findLargest() {
-        if (root == nullptr) throw runtime_error("BST is empty");
+        if (!root) throw runtime_error("BST is empty");
         Node* current = root;
         while (current->right) current = current->right;
         return current->value;
@@ -47,21 +50,22 @@ private:
     Node* root;
 
     Node* insertRec(Node* node, int val) {
-        if (node == nullptr) return new Node(val);
-        if (val < node->value) node->left = insertRec(node->left, val);
-        else if (val > node->value) node->right = insertRec(node->right, val);
+        if (!node) return new Node(val);
+        if (val <= node->value) node->left = insertRec(node->left, val);
+        else node->right = insertRec(node->right, val);
         return node;
     }
 
-    Node* searchRec(Node* node, int val) {
-        if (node == nullptr) return nullptr;
+    Node* searchRec(Node* node, int val, vector<int>& path) {
+        if (!node) return nullptr;
+        path.push_back(node->value);
         if (val == node->value) return node;
-        if (val < node->value) return searchRec(node->left, val);
-        else return searchRec(node->right, val);
+        if (val < node->value) return searchRec(node->left, val, path);
+        return searchRec(node->right, val, path);
     }
 
     Node* removeRec(Node* node, int val) {
-        if (node == nullptr) return nullptr;
+        if (!node) return nullptr;
         if (val < node->value) node->left = removeRec(node->left, val);
         else if (val > node->value) node->right = removeRec(node->right, val);
         else {
@@ -110,8 +114,18 @@ int main() {
             case 2:
                 cout << "Enter value to search: ";
                 cin >> val;
-                if (tree.search(val)) cout << val << " found in the tree.\n";
-                else cout << val << " not found in the tree.\n";
+                {
+                    vector<int> path = tree.search(val);
+                    if (path.empty() || path.back() != val) {
+                        cout << "Search unsuccessful. Path traversed: ";
+                    } else {
+                        cout << "Search successful. Path traversed: ";
+                    }
+                    for (int p : path) {
+                        cout << p << " ";
+                    }
+                    cout << "\n";
+                }
                 break;
             case 3:
                 cout << "Enter value to delete: ";

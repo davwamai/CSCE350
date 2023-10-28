@@ -1,7 +1,10 @@
-#include <iostream>
-#include <vector>
+#include <iostream>  // For in and out
+#include <vector>  // For structure containers
+#include <sstream>  // Convienient CLI line parsing
+#include <limits>  // For numeric limits
 using namespace std;
 
+// Structure for nodes
 struct Node {
     int value;
     Node* left;
@@ -9,22 +12,23 @@ struct Node {
     Node(int val) : value(val), left(nullptr), right(nullptr) {}
 };
 
+// Class to define building and operating on the tree
 class BST {
-public:
+ public:
     BST() : root(nullptr) {}
 
     void insert(int val) {
-        root = insertRec(root, val);
+        root = insert_sub(root, val);
     }
 
     vector<int> search(int val) {
         vector<int> path;
-        searchRec(root, val, path);
+        search_sub(root, val, path);
         return path;
     }
 
     void remove(int val) {
-        root = removeRec(root, val);
+        root = remove_sub(root, val);
     }
 
     int findSmallest() {
@@ -42,32 +46,48 @@ public:
     }
 
     void display() {
-        displayRec(root);
+        display_sub(root);
         cout << "\n";
     }
 
-private:
-    Node* root;
-
-    Node* insertRec(Node* node, int val) {
-        if (!node) return new Node(val);
-        if (val <= node->value) node->left = insertRec(node->left, val);
-        else node->right = insertRec(node->right, val);
-        return node;
+    void trace(vector<int> path) {
+      for (int p : path) {
+       cout << p << " -> ";
+      }
+      cout << " search key not found\n";
     }
 
-    Node* searchRec(Node* node, int val, vector<int>& path) {
+
+ private:
+    Node* root;
+
+    // Handles root, recursively calls itself to determine left or right node placement
+    Node* insert_sub(Node* node, int val) {
+        if (!node) return new Node(val);
+        if (val == node-> value) {
+          cout << val << " is a duplicate value, cannot add" << endl;
+        }
+        else if (val < node-> value) node->left = insert_sub(node->left, val);
+        else node-> right = insert_sub(node->right, val);
+
+        return node;
+      }
+
+    // If node deosnt exist, return a null address. Otherwise, recursively call self to determine traveral direction
+    Node* search_sub(Node* node, int val, vector<int>& path) {
         if (!node) return nullptr;
         path.push_back(node->value);
         if (val == node->value) return node;
-        if (val < node->value) return searchRec(node->left, val, path);
-        return searchRec(node->right, val, path);
+        if (val < node->value) return search_sub(node->left, val, path);
+        return search_sub(node->right, val, path);
     }
 
-    Node* removeRec(Node* node, int val) {
+    // Traverses to target node and replaces deleted node w tmep
+    // TODO: handle two children
+    Node* remove_sub(Node* node, int val) {
         if (!node) return nullptr;
-        if (val < node->value) node->left = removeRec(node->left, val);
-        else if (val > node->value) node->right = removeRec(node->right, val);
+        if (val < node->value) node->left = remove_sub(node->left, val);
+        else if (val > node->value) node->right = remove_sub(node->right, val);
         else {
             if (!node->left) {
                 Node* temp = node->right;
@@ -79,37 +99,45 @@ private:
                 return temp;
             }
             node->value = findSmallestValue(node->right);
-            node->right = removeRec(node->right, node->value);
+            node->right = remove_sub(node->right, node->value);
         }
         return node;
     }
 
+    // Goes left for smallest
     int findSmallestValue(Node* node) {
         while (node->left) node = node->left;
         return node->value;
     }
 
-    void displayRec(Node* node) {
+    void display_sub(Node* node) {
         if (!node) return;
-        displayRec(node->left);
+        display_sub(node->left);
         cout << node->value << " ";
-        displayRec(node->right);
+        display_sub(node->right);
     }
 };
 
 int main() {
     BST tree;
     int choice, val;
+    string line;
 
     do {
-        cout << "1. Insert\n2. Search\n3. Delete\n4. Find smallest\n5. Find largest\n6. Display\n0. Exit\n";
+        cout << "1. Insert node\n2. Search for node\n3. Delete node\n4. Find smallest node\n5. Find largest node\n6. Display tree\n0. Exit\n";
         cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (choice) {
             case 1:
-                cout << "Enter value to insert: ";
-                cin >> val;
-                tree.insert(val);
+                cout << "Enter values to insert (delimited by spaces): ";
+                getline(cin, line);
+                {  // Note: first entry is always root.
+                    istringstream iss(line);
+                    while (iss >> val) {
+                        tree.insert(val);
+                    }
+                }
                 break;
             case 2:
                 cout << "Enter value to search: ";
@@ -121,16 +149,18 @@ int main() {
                     } else {
                         cout << "Search successful. Path traversed: ";
                     }
-                    for (int p : path) {
-                        cout << p << " ";
-                    }
-                    cout << "\n";
+                    tree.trace(path);
                 }
                 break;
             case 3:
-                cout << "Enter value to delete: ";
-                cin >> val;
-                tree.remove(val);
+                cout << "Enter values to delete (delimited by spaces): ";
+                getline(cin, line);
+                {
+                    istringstream iss(line);
+                    while (iss >> val) {
+                        tree.remove(val);
+                    }
+                }
                 break;
             case 4:
                 try {
@@ -155,4 +185,3 @@ int main() {
 
     return 0;
 }
-

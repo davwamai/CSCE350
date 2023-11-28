@@ -5,7 +5,7 @@
 
 const int N = 7;
 
-std::vector<std::vector<int>> adjMatrix(N, std::vector<int>(N, 0));
+std::vector<std::vector<int>> p1adjMatrix(N, std::vector<int>(N, 0));
 
 std::vector<int> parent(N, -1);
 std::vector<bool> visited(N, false);
@@ -22,7 +22,7 @@ void BFS(int s) {
     q.pop();
 
     for (int i = 0; i < N; i++) {
-      if (adjMatrix[current][i] == 1 && !visited[i]) {
+      if (p1adjMatrix[current][i] == 1 && !visited[i]) {
         visited[i] = 1;
         q.push(i);
         parent[i] = current;
@@ -31,39 +31,39 @@ void BFS(int s) {
   }
 }
 
-// a function that prints the path from source to destination
-// using the parent array
-void printPath(int s, int d) {
-  if (s == d) {
-    std::cout << char('a' + s) << " ";
-    return;
-  }
-  printPath(s, parent[d]);
-  std::cout << char('a' + d) << " ";
-}
 
 int main() {
-  // FIXME: find comfortable init parameters
-  std::vector<std::pair<int, int>> edges = {{2, 0}, {3, 0}, {4, 0},
-                                    {0, 2}, {4, 5}, {5, 6}, {4, 6}};
+  std::vector<std::pair<int, int>> edges = {{0, 1}, {0, 2}, {0, 3},{0, 4},
+                                           {1, 0}, {1, 3}, {1, 5},
+                                           {2,0}, {2, 6},
+                                           {3, 0}, {3, 1}, {3, 5},   
+                                           {4, 0}, {4, 6}, 
+                                           {5, 1}, {5, 3},
+                                           {6, 2}, {6, 4}};
+
   for (auto edge : edges) {
     int u = edge.first;
     int v = edge.second;
-    adjMatrix[u][v] = 1;
-    adjMatrix[v][u] = 1;
+    p1adjMatrix[u][v] = 1;
+    p1adjMatrix[v][u] = 1;
   }
   std::cout << "Graph in Adjacency Matrix Format" << std::endl;
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++) {
-      std::cout << adjMatrix[i][j] << " ";
+      std::cout << p1adjMatrix[i][j] << " ";
     }
     std::cout << std::endl;
   }
+  std::cout << std::endl;
 
   BFS(0);
   std::cout << "BFS Forest (Node: Parent)\n";
   for (int i = 0; i < N; i++) {
     std::cout << char('a'+ i) << ": " << char('a' + parent[i]) << std::endl;
   }
+  std::cout << std::endl;
+
+  
+
   return 0;
 }
